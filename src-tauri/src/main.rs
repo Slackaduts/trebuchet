@@ -73,6 +73,8 @@ async fn get_slideshow_images() -> (Vec<String>, Vec<String>) {
     return (image_urls, link_urls);
 }
 
+
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![get_slideshow_images])

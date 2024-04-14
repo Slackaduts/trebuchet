@@ -13,7 +13,7 @@
 <div class = "flex flex-row w-full justify-start items-center space-x-1">
     <HoverCard.Root>
         <HoverCard.Trigger>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" href = "/settings">
                 <Bolt size={titlebar_icon_size}/>
             </Button>
         </HoverCard.Trigger>
@@ -26,7 +26,7 @@
 
     <HoverCard.Root>
         <HoverCard.Trigger>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" href = "/accounts">
                 <Handshake size={titlebar_icon_size} />
             </Button>
         </HoverCard.Trigger>
@@ -39,7 +39,7 @@
 
     <HoverCard.Root>
         <HoverCard.Trigger>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" href = "/">
                 <Home size={titlebar_icon_size} />
             </Button>
         </HoverCard.Trigger>

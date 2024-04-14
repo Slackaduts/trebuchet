@@ -1,7 +1,9 @@
 <script lang="ts">
+	import Autoplay from "embla-carousel-autoplay";
 	import * as Carousel from "$lib/components/ui/carousel/index.js";
+	
 
-	// When using the Tauri API npm package:
+	import { Body } from "@tauri-apps/api/http"
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { open } from '@tauri-apps/api/shell';
 	import { onMount } from "svelte";
@@ -16,7 +18,7 @@
 
 
 <div class = "h-full w-full flex items-center justify-center">
-	<Carousel.Root  opts={{ align: "center", loop: true, }} class = " min-h-sm max-h-sm min-w-sm max-w-sm items-center bg-red-400">
+	<Carousel.Root  opts={{ align: "center", loop: true, }} plugins={[Autoplay({delay: 4000,})]} class = " min-h-sm max-h-sm min-w-sm max-w-sm items-center bg-red-400">
 		<Carousel.Content class = "max-h-sm max-w-sm items-center w-fit">
 			{#each image_urls as url, i}
 				<Carousel.Item class = "flex justify-center items-center">

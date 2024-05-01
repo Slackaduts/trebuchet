@@ -3,81 +3,152 @@
 #![warn(dead_code)]
 #![forbid(unsafe_code)]
 
-use reqwest::get;
+use std::{str::{Chars, FromStr}, sync::Arc};
 
-const SLIDESHOW_URL: &str = "https://www.wizard101.com/WizardPatchClient?abs=1";
-const GAME_URL: &str = "https://www.wizard101.com";
 
-/// Extracts the slideshow URL from the given input.
-/// 
-/// The input is split by comma, and the 0th element is returned with apostrophes removed.
-fn extract_slideshow_url(input: &str) -> String {
-    input.split(",").collect::<Vec<&str>>()[0].replace("'", "")
+const PRE_NEWS_PAT: &str = r#"<td class="contentbox_headermiddle"><h2><center>"#;
+const POST_NEWS_CUTOFF: &str = r#"&raquo;"#;
+
+fn extract_string_between(input: &str, pre: &str, post: &str) -> Option<(String, usize, usize)> {
+    let input_str = input.to_string();
+    let pre_index = input_str.find(pre)? + pre.len();
+
+    let post_index = input_str[pre_index..].find(post)? + pre_index;
+
+    Some((input[pre_index..post_index].to_string(), pre_index, post_index))
 }
 
-/// Extracts the clickable link URL from the given input
-/// 
-/// The input is split by quotation mark, and the 2nd element is returned.
-/// If the output starts with "/", it is appended to the GAME_URL.
-fn extract_click_url(input: &str) -> String {
-    let output = input.split("\"").collect::<Vec<&str>>()[1].to_string();
+fn extract_string_between_vec(input: &str, pre: &str, post: Vec<&str>) -> Option<String> {
+    let mut nearest_match: (String, usize) = (String::new(), 0);
+    for search in post {
+        match extract_string_between(input, pre, search) {
+            Some(a) => {
+                let (_, x) = nearest_match;
+                let (b, _, c) = a;
 
-    if output.starts_with("/") {
-        return GAME_URL.to_string() + &output;
+                if c > x { nearest_match = (b, c) }
+            },
+            None => ()
+        }
     }
 
-    output
+    let (matched_str, match_i) = nearest_match;
+    match match_i { 0 => return None, _ => () }
+
+    return Some(matched_str)
 }
 
-/// Retrieves the slideshow image/href links from the Wizard101 website.
+/// Recursively strips HTML tags from a given str.
 /// 
-/// Returns a tuple containing two vectors: image URLs and link URLs.
+fn strip_html(input: &str) -> String {
+    return String::from_str(s)
+};
+
+/// 
+/// 
+fn strip_html_arc(input: &Chars) -> Chars {
+    let mut output = String::new();
+    let mut to_rem = false;
+
+    // reverse string once, search from opposite end once open bracket is found
+
+    for i in input.into_iter() {
+    }
+
+    return output;
+}
+
+
+// #[tauri::command]
+// fn parse_wizard_news(response: String) -> Option<String> {
+//     // let news_links: Vec<(String, String)> = Vec::new();
+
+//     for (i, elem) in response.split(PRE_NEWS_PAT).enumerate() {
+//         match i { 0 => continue , _ => ()}
+
+//         // Only push everything before "&raquo" to the split_response vector
+//         let cut_elem: &str = elem.split(POST_NEWS_CUTOFF).collect::<Vec<&str>>()[0];
+
+//         let date = extract_string_between_vec(cut_elem, "", ["</center></h2>"].to_vec()).expect("Date not found");
+//         let news_content = extract_string_between_vec(cut_elem, "<br>", [r#"</p>"#, r#"<a href="#].to_vec()).expect("Content not found");
+//         let title_w_link = extract_string_between_vec(cut_elem, r#"<p style="font-size: 13px; color: #000;">"#, ["</b>"].to_vec()).expect("Could not find title");
+//         // println!("{}", title_w_link);
+//         let image = extract_string_between_vec(cut_elem, r#"<img src=""#, [r#"""#].to_vec()).expect("Could not find image/link block.");
+//         let link = match extract_string_between_vec(cut_elem, r#"<a href=""#, [r#"""#].to_vec()) {
+//             Some(a) => a,
+//             None => String::new()
+//         };
+//         let title = match extract_string_between_vec(&title_w_link, "target=_blank>", ["</a>"].to_vec()) {
+//             Some(a) => a,
+//             None => {
+//                 title_w_link.split("<b>").collect::<Vec<&str>>()[1].to_owned()
+//             }
+//         };
+//         println!("Date: {}", date);
+//         println!("Title: {}", title);
+//         println!("Image: {}", image);
+//         println!("Link: {}", link);
+//         println!("Content: {}", news_content);
+//         println!("-------------------------------------------------------------------------------------------------------------");
+//     }
+
+//     return Some(String::new());
+// }
+
+
 #[tauri::command]
-async fn get_slideshow_images() -> (Vec<String>, Vec<String>) {
-    let response = get(SLIDESHOW_URL)
-        .await
-        .expect("Failed to read the slideshow page content.");
-    let html = response
-        .text()
-        .await
-        .expect("Failed to read the slideshow page content.");
+fn parse_pirate_news(response: String) -> Option<String> {
+    for (i, elem) in response.split(r#"<div class="boxheadermiddle"><h2>"#).enumerate() {
+        match i { 0 => continue , 1 => continue, _ => ()}
 
-    let lines: Vec<&str> = html.split("\n").collect();
+        // Only push everything before "&raquo" to the split_response vector
+        let cut_elem: &str = elem.split(POST_NEWS_CUTOFF).collect::<Vec<&str>>().get(0)?;
 
-    let mut within_card_i: i8 = 0;
-    let mut image_urls: Vec<String> = Vec::new();
-    let mut link_urls: Vec<String> = Vec::new();
+        // Date is the beginning, so no front slicing is needed
+        let date: String = extract_string_between_vec(cut_elem, "", vec!["<"])?;
+        
+        // Actual news content is nested inbetween a br tag and a /p or a href tag
+        let news_content: String = extract_string_between_vec(cut_elem, "<br>", vec![r#"</p>"#, r#"<a href="#])?;
+        
+        // Link/title formatting is inconsistent and will need further manipulation
+        let title_w_link: String = extract_string_between_vec(cut_elem, r#"<p><b>"#, vec!["</b>"])?;
 
-    for line in lines {
-        match within_card_i {
-            0 => {}
-            1 => {
-                image_urls.push(extract_slideshow_url(&line));
-            }
-            2 => {
-                link_urls.push(extract_click_url(&line));
-            }
-            _ => {
-                within_card_i = 0;
-            }
-        }
+        let image: String = extract_string_between_vec(cut_elem, r#"<img src=""#, vec![r#"""#])?;
 
-        if 0 != within_card_i {
-            within_card_i += 1;
-        }
-        if line.contains("myCarousel.addCard(") & !line.contains("//") {
-            within_card_i += 1;
-        }
+        let link: String = match extract_string_between_vec(cut_elem, r#"<a href=""#, vec![r#"""#]) {
+            Some(a) => { //Link will either be full URL or something like "/game/news", this code handles that.
+                let b = match str::starts_with(&a, '/') { true => format!("https://www.pirate101.com{}", &a), _ => a };
+                b
+            },
+            None => String::new()
+        };
+
+        //TODO: Investigate if this actually does anything, too far in to remember exact parsing steps for title
+        // let raw_title = match extract_string_between_vec(&title_w_link, "target=_blank>", vec!["</a>"]) {
+        //     Some(a) => a,
+        //     None => title_w_link
+        // };
+
+        
+        let title = match extract_string_between_vec(&title_w_link, r#"">"#, vec!["</a", "</b"]) { 
+            Some(a) => a,
+            None => title_w_link
+        };
+        println!("Date: {}", date);
+        println!("Title: {}", title);
+        println!("Image: {}", image);
+        println!("Link: {}", link);
+        println!("Content: {}", news_content);
+        println!("-------------------------------------------------------------------------------------------------------------");
     }
 
-    return (image_urls, link_urls);
+    return Some(String::new());
 }
-
 
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![get_slideshow_images])
+        .invoke_handler(tauri::generate_handler![parse_pirate_news])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

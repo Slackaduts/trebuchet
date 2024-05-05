@@ -9,6 +9,7 @@
 
 	import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 	import * as Accordion from "$lib/components/ui/accordion";
+
 	// import { Separator } from '$lib/components/ui/separator';
 
 	const WIZARD101_NEWS_URL: string = "https://www.wizard101.com/game/news/";
@@ -59,11 +60,11 @@
 
 
 
-<div class = "h-full w-full flex items-center justify-center">
+<div class = "w-full h-full flex flex-col justify-between">
 	<div class = "grid grid-cols-2 p-10">
-		<div class = "items-center justify-center text-center py-10">
-			<h1 class="text-4xl font-bold">News</h1>
-			<ScrollArea class="h-[300px] w-[500px] rounded-md border p-4">
+		<div class = "items-center justify-center text-center ">
+			<h1 class="py-10 text-4xl font-bold">News</h1>
+			<ScrollArea class="h-[300px] w-full rounded-md border p-4">
 				<Accordion.Root>
 					{#each live_news as item, i}
 					<Accordion.Item value="item-{i}">
@@ -80,7 +81,31 @@
 				</Accordion.Root>
 			</ScrollArea>
 		</div>
+		<!-- // Create a div that is vertically and horizontally centered and uses the full witdh and height of the parent div. -->
+		<div class = "flex items-center justify-center h-full">
+			<div class = "text-center">
+				<h1 class="text-4xl font-bold">Wizard101</h1>
+			</div>
+		</div>
 	</div>
+	<!-- <div class="flex flex-col items-center justify-center w-full bg-purple-400">
+		<Separator></Separator>
+		<div class = "flex w-full h-fit items-center justify-between">
+			<Select.Root>
+				<Select.Trigger class="w-[180px]">
+					<Select.Value placeholder="Theme" />
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Item value="light">Light</Select.Item>
+					<Select.Item value="dark">Dark</Select.Item>
+					<Select.Item value="system">System</Select.Item>
+				</Select.Content>
+			</Select.Root>
+			<Progress value={33} />
+			<Button class = "text-2xl">Play</Button>
+		</div>
+	</div> -->
 </div>
+
 
 

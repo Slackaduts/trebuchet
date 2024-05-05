@@ -4,17 +4,17 @@
     import {Separator} from "$lib/components/ui/separator";
     import * as HoverCard from "$lib/components/ui/hover-card";
 
-    import {Bolt, X, Handshake, Home} from 'lucide-svelte';
+    import {Bolt, Handshake, Home, Terminal} from 'lucide-svelte';
 
     export let titlebar_icon_size = 24;
 </script>
  
 
-<div class = "flex flex-row w-full justify-start items-center space-x-1">
+<div data-tauri-drag-region class = "flex flex-row w-full justify-start items-center space-x-1">
     <HoverCard.Root>
         <HoverCard.Trigger>
             <Button variant="outline" size="icon" href = "/settings">
-                <Bolt size={titlebar_icon_size}/>
+                <Bolt size={titlebar_icon_size} class = "bg-red-500"/>
             </Button>
         </HoverCard.Trigger>
         <HoverCard.Content>
@@ -47,6 +47,19 @@
             <h1 class = "text-lg font-semibold text-foreground">Home</h1>
             <Separator/>
             Launch, update, and manage Wizard101 or Pirate101 with any number of accounts.
+        </HoverCard.Content>
+    </HoverCard.Root>
+
+    <HoverCard.Root>
+        <HoverCard.Trigger>
+            <Button variant="outline" size="icon" href = "/logs">
+                <Terminal size={titlebar_icon_size} />
+            </Button>
+        </HoverCard.Trigger>
+        <HoverCard.Content>
+            <h1 class = "text-lg font-semibold text-foreground">Logs</h1>
+            <Separator/>
+            See live debug information for Trebuchet.
         </HoverCard.Content>
     </HoverCard.Root>
 </div>

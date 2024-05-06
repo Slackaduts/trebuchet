@@ -14,7 +14,7 @@
     <HoverCard.Root>
         <HoverCard.Trigger>
             <Button variant="outline" size="icon" href = "/settings">
-                <Bolt size={titlebar_icon_size} class = "bg-red-500"/>
+                <Bolt size={titlebar_icon_size}/>
             </Button>
         </HoverCard.Trigger>
         <HoverCard.Content>

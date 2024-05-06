@@ -8,6 +8,7 @@
 	// import { Separator } from '$lib/components/ui/separator';
 	import { Button } from "$lib/components/ui/button";
 	import { Progress } from "$lib/components/ui/progress";
+	import * as Tooltip from "$lib/components/ui/tooltip";
 
 	import { ShipWheel } from 'lucide-svelte';
 	import { WandSparkles } from 'lucide-svelte';
@@ -23,20 +24,35 @@
 			<Separator></Separator>
 		</div>
 
-		<div class="flex">
+		<div class="flex h-full">
 			<slot />
 		</div>
 
 		<div class="flex flex-col h-fit items-center w-full">
 			<Separator></Separator>
-			<div class = "flex w-full h-fit items-center justify-between p-2 space-x-2">
-				<ToggleGroup.Root type="single" variant="outline">
-					<ToggleGroup.Item value="wizard">
-						<WandSparkles size={titlebar_icon_size} />
-					</ToggleGroup.Item>
-					<ToggleGroup.Item value="pirate" size="sm">
-						<ShipWheel size={titlebar_icon_size} class="bg-red-500" />
-					</ToggleGroup.Item>
+			<div class = "flex w-full h-fit items-center justify-between p-1 space-x-2">
+				<ToggleGroup.Root type="single" variant="outline" size= "default" class = "h-10 flex">
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<ToggleGroup.Item value="wizard" size="default" class = "p-2">
+								<WandSparkles size={titlebar_icon_size}/>
+							</ToggleGroup.Item>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p>Wizard101</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
+
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<ToggleGroup.Item value="pirate" size="default" class = "p-2">
+								<ShipWheel size={titlebar_icon_size}/>
+							</ToggleGroup.Item>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p>Pirate101</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
 				</ToggleGroup.Root>
 				<Progress value={33} class="h-[20%]" />
 				<Button variant="outline" class = "px-5 py-4 text-2xl">Play</Button>

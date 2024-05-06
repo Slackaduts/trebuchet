@@ -9,8 +9,9 @@
 
 	import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 	import * as Accordion from "$lib/components/ui/accordion";
+	import { Separator } from "$lib/components/ui/separator";
 
-	// import { Separator } from '$lib/components/ui/separator';
+	import { Rss } from 'lucide-svelte';
 
 	const WIZARD101_NEWS_URL: string = "https://www.wizard101.com/game/news/";
 	const PIRATE101_NEWS_URL: string = "https://www.pirate101.com/free_game/daily_news"
@@ -58,22 +59,28 @@
 
 </script>
 
-
-
 <div class = "w-full h-full flex flex-col justify-between">
 	<div class = "grid grid-cols-2 p-10">
-		<div class = "items-center justify-center text-center ">
-			<h1 class="py-10 text-4xl font-bold">News</h1>
-			<ScrollArea class="h-[300px] w-full rounded-md border p-4">
+		<div class = "items-center justify-center text-center">
+			<!-- <h1 class="py-10 text-4xl font-bold">News</h1> -->
+			<ScrollArea class="h-[350px] w-full rounded-md border p-2">
 				<Accordion.Root>
 					{#each live_news as item, i}
 					<Accordion.Item value="item-{i}">
 						<Accordion.Trigger>{item.title}</Accordion.Trigger>
-						<Accordion.Content>
+						<Accordion.Content class = "w-full">
 							<div class="flex flex-row justify-center items-center">
-								<!-- <img src={item.image} alt={item.title} class="w-auto h-auto" /> -->
-								<!-- <Separator orientation="vertical" class = "m-10 h-auto"/> -->
-								{item.content}
+								<img src={item.image} alt={item.title} class="w-auto h-auto" />
+								<div class = "m-2">
+									{item.content}
+								</div>
+							</div>
+							<Separator></Separator>
+							<div class = "w-full h-full flex flex-row items-center justify-between bg-purple-300">
+								<Rss />
+								<div class = "m-2">
+									<h5 class = "font-semibold italic p-1">{item.date}</h5>
+								</div>
 							</div>
 						</Accordion.Content>
 					</Accordion.Item>
@@ -88,23 +95,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="flex flex-col items-center justify-center w-full bg-purple-400">
-		<Separator></Separator>
-		<div class = "flex w-full h-fit items-center justify-between">
-			<Select.Root>
-				<Select.Trigger class="w-[180px]">
-					<Select.Value placeholder="Theme" />
-				</Select.Trigger>
-				<Select.Content>
-					<Select.Item value="light">Light</Select.Item>
-					<Select.Item value="dark">Dark</Select.Item>
-					<Select.Item value="system">System</Select.Item>
-				</Select.Content>
-			</Select.Root>
-			<Progress value={33} />
-			<Button class = "text-2xl">Play</Button>
-		</div>
-	</div> -->
 </div>
 
 

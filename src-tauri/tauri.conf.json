@@ -72,6 +72,9 @@
           "https://versionec.us.wizard101.com/*",
           "https://versionec.us.pirate101.com/*"
         ]
+      },
+      "shell": {
+        "open": true
       }
     },
     "bundle": {

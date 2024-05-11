@@ -11,6 +11,6 @@
 </script>
 
 
-<Button variant="outline" on:click="{minimize}" size = "icon">
+<Button variant="ghost" on:click="{minimize}" size = "icon">
     <Minus size = {size}/>
 </Button>

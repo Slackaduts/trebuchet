@@ -8,6 +8,8 @@ export const toggleVariants = tv({
 			default: "bg-transparent",
 			outline:
 				"border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
+			ghost:
+				"bg-transparent hover:bg-accent hover:text-accent-foreground rounded",
 		},
 		size: {
 			default: "h-10 px-3",

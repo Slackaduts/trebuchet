@@ -9,11 +9,13 @@
 	import { Button } from "$lib/components/ui/button";
 	import { Progress } from "$lib/components/ui/progress";
 	import * as Tooltip from "$lib/components/ui/tooltip";
+	import * as ToggleGroup from "$lib/components/ui/toggle-group";
 
 	import { ShipWheel } from 'lucide-svelte';
 	import { WandSparkles } from 'lucide-svelte';
-	import * as ToggleGroup from "$lib/components/ui/toggle-group";
-
+	import { Play } from 'lucide-svelte';
+	
+	let selectedOption = 'pirate';
 	export let titlebar_icon_size = 24;
 </script>
 
@@ -31,7 +33,7 @@
 		<div class="flex flex-col h-fit items-center w-full">
 			<Separator></Separator>
 			<div class = "flex w-full h-fit items-center justify-between p-1 space-x-2">
-				<ToggleGroup.Root type="single" variant="outline" size= "default" class = "h-10 flex">
+				<ToggleGroup.Root type="single" variant="ghost" size= "default" class = "h-10 flex" bind:value={selectedOption}>
 					<Tooltip.Root>
 						<Tooltip.Trigger>
 							<ToggleGroup.Item value="wizard" size="default" class = "p-2">
@@ -54,8 +56,11 @@
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</ToggleGroup.Root>
+
 				<Progress value={33} class="h-[20%]" />
-				<Button variant="outline" class = "px-5 py-4 text-2xl">Play</Button>
+				<Button variant="ghost" size = "icon">
+					<Play size={titlebar_icon_size}/>
+				</Button>
 			</div>
 			<Separator></Separator>
 			<Footer></Footer>

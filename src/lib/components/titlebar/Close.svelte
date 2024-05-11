@@ -11,6 +11,6 @@
 </script>
   
 
-<Button variant="outline" on:click="{close}" size = "icon">
+<Button variant="ghost" on:click="{close}" size = "icon">
     <X size = {size}/>
 </Button>

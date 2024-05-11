@@ -13,7 +13,7 @@
 </script>
   
 
-<Button variant = "outline" on:click="{toggleMaximize}" size = "icon">
+<Button variant = "ghost" on:click="{toggleMaximize}" size = "icon">
     { #if !(show) }
         <Maximize size = {size}/>
     {:else}
